@@ -20,7 +20,7 @@ move_directory()
     done
 
     if [[ ! -d "$src" ]]; then
-        echo "<src-dir> not found"
+        echo "$src not found"
         exit 0
     fi
 

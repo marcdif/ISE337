@@ -5,64 +5,50 @@ move_directory()
     local dest=$2
     local osrc=$3
     local odest=$4
-    local layer=$(($5+1))
+    
+    # echo "Searching $src"
 
-    # echo "Moving all source code files from $src to $dest..."
+    for d in $src/*/ ; do
+        if [[ $d != *"*"* ]]; then
+            local fixed=${d//\/\//\/}
+
+            local dr=${fixed/"$osrc"/"$odest"}
+
+            # echo "Starting from $fixed to $dr with original $osrc and $odest"
+            move_directory $fixed $dr $osrc $odest
+        fi
+    done
 
     if [[ ! -d "$src" ]]; then
         echo "<src-dir> not found"
         exit 0
     fi
 
-    # echo "Making $dest..."
-    mkdir -p $dest
-
-    mv $src/*.c $dest/
+    local filecount=$(($(ls -1q $src/*.c | wc -l)))
+    local continue="true"
     
-    # echo "Searching $src"
-
-    for d in $src/*/ ; do
-        if [[ $d != *"*"* ]]; then
-            # echo "${d%?} and ${d#?}"
-            # [[ "$d" =~ ((\/[a-zA-Z0-9\/]+)+) ]] && echo "${BASH_REMATCH[1]}"
-            local fixed=${d//\/\//\/}
-            # echo "$d;HEY;$fixed"
+    if [[ $filecount -gt 3 ]]; then
+        echo "There are more than 3 files in the directory $src:"
+        ls $src/*.c
+        read -p "Should these files be moved? [y/n] " -r
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            continue="false"
         fi
-    done
+    fi
 
-    for d in $src/*/ ; do
-        if [[ $d != *"*"* ]]; then
-            # local dr=${d#"$src/"}
-            local fixed=${d//\/\//\/}
+    if [[ $continue = "true" ]]; then
+        # echo "Making $dest..."
+        mkdir -p $dest
 
-            local dr=${fixed/"$osrc"/"$odest"}
-            
-            # [[ "$d" =~ ((\/[a-zA-Z0-9\/]+)+) ]] && dr="${BASH_REMATCH[1]}"
+        # echo "Moving all source code files from $src to $dest..."
 
-            # echo $dr
-            # local desttemp="$odest/$dr"
-            # echo "Starting from $fixed to $dr with main original $odest layer $layer"
-            # local desttemp=$odest${dr#?}
-            # echo "Starting $dest ${dr#?} $desttemp on layer $layer"
-            move_directory $fixed $dr $osrc $odest $layer
-        fi
-    done
-
+        mv $src/*.c $dest/
+    fi
 }
 
-# if [ "$#" -lt 2 ]; then
-#     echo "src and dest dirs missing"
-#     exit
-# fi
+if [ "$#" -ne 2 ]; then
+    echo "src and dest dirs missing"
+    exit
+fi
 
-move_directory $1 $2 $1 $2 1
-
-# echo "$2/asdfv3/324/3rse4dr/" | sed 's/(\/[a-zA-Z0-9\/]+)+/\1/'
-# [[ "$2/asdfv3/324/3rse4dr/" =~ ((\/[a-zA-Z0-9\/]+)+) ]] && echo "${BASH_REMATCH[1]}"
-
-string="project/a/b/c/d"
-prefix="project"
-suffix="ld"
-foo=${d#"$src/"}
-foo=${foo%"$suffix"}
-# echo "${foo}"
+move_directory $1 $2 $1 $2

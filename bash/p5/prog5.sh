@@ -19,7 +19,7 @@ fi
 
 dictionary=()
 i=0
-while IFS= read -r line; do
+while IFS= read -r line || [ -n "$line" ]; do
     dictionary[$i]=$line
     i=$(($i+1))
 done < $dictionaryFile

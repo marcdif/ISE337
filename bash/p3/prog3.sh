@@ -29,7 +29,7 @@ fi
 
 scores=()
 int=-1
-while IFS= read -r line; do
+while IFS= read -r line || [ -n "$line" ]; do
     # echo "----------- $int"
     if [[ $int -ne -1 ]]; then
         array=($(echo "$line" | grep -o  '\(\d\+\)'))

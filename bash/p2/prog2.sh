@@ -17,7 +17,7 @@ touch $output
 
 columnTotals=()
 
-while IFS= read -r line; do
+while IFS= read -r line || [ -n "$line" ]; do
     if [[ $line == *","* ]] || [[ $line == *":"* ]] || [[ $line == *";"* ]]; then
         rows=$(($rows+1))
         array=($(echo "$line" | grep -o  '\(\d\+\)'))

@@ -1,0 +1,32 @@
+<%= form_with scope: :book, local: true do |form| %>
+  <% if params.has_key?(:notfound) %>
+    <h3>Could not find book with id: <%= params[:id] %></h3>
+  <% elsif params.has_key?(:notvalid) %>
+    <h3>Could not edit book with id: <%= params[:id] %></h3>
+  <% end %>
+  
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+
+  <p>
+    <%= form.label :author %><br>
+    <%= form.text_area :author %>
+  </p>
+
+  <p>
+    <%= form.label :isbn %><br>
+    <%= form.text_area :isbn %>
+  </p>
+
+  <p>
+    <%= form.label :copies %><br>
+    <%= form.number_field :copies %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+<%= link_to 'Back', '/books/search_admin' %>

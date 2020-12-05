@@ -1,0 +1,62 @@
+<h2>Find a Book - Admin</h2>
+
+<p><a href="/administrator">Return to admin page</a></p>
+
+<% if params.has_key?(:notfound) %>
+    <h3>Could not find book with id: <%= params[:errorid] %></h3>
+<% end %>
+
+<% if params.has_key?(:nocopies) %>
+    <h3>No copies left for book with id: <%= params[:errorid] %></h3>
+<% end %>
+
+<h4>Search by Title</h4>
+
+<%= form_tag('/books/search_admin', method: :get) do %>
+    <%= text_field_tag(:search_title, params[:search]) %>
+    <%= submit_tag ("Search") %>
+<% end %>
+
+<h4>Search by Author</h4>
+
+<%= form_tag('/books/search_admin', method: :get) do %>
+    <%= text_field_tag(:search_author, params[:search]) %>
+    <%= submit_tag ("Search") %>
+<% end %>
+
+<h4>Search by ISBN</h4>
+
+<%= form_tag('/books/search_admin', method: :get) do %>
+    <%= text_field_tag(:search_isbn, params[:search]) %>
+    <%= submit_tag ("Search") %>
+<% end %>
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+</style>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Edit</th>
+        <th>Checkout</th>
+    </tr>
+<% @books.each do |book| %>
+    <tr>
+        <th><%= link_to book.title, book_path(book) %></th>
+        <th><%= book.author %></th>
+        <th><%= book.isbn %></th>
+        <th><a href="/edit/<%= book.id %>">Edit Link</a></th>
+        <% if book.copies >= 1 %>
+            <th><a href="/checkout/<%= book.id %>">Checkout</a></th>
+        <% else %>
+            <th>No Copies</th>
+        <% end %>
+    </tr>
+<% end %>
+</table>

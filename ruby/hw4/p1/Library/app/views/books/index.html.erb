@@ -1,0 +1,50 @@
+<h2>Find a Book</h2>
+
+<p><a href="/">Return to main page</a></p>
+
+<h4>Search by Title</h4>
+
+<%= form_tag(books_path, method: :get) do %>
+    <%= text_field_tag(:search_title, params[:search]) %>
+    <%= submit_tag ("Search") %>
+<% end %>
+
+<h4>Search by Author</h4>
+
+<%= form_tag(books_path, method: :get) do %>
+    <%= text_field_tag(:search_author, params[:search]) %>
+    <%= submit_tag ("Search") %>
+<% end %>
+
+<h4>Search by ISBN</h4>
+
+<%= form_tag(books_path, method: :get) do %>
+    <%= text_field_tag(:search_isbn, params[:search]) %>
+    <%= submit_tag ("Search") %>
+<% end %>
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+</style>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Add Review</th>
+        <th>View Review</th>
+    </tr>
+<% @books.each do |book| %>
+    <tr>
+        <th><%= link_to book.title, book_path(book) %></th>
+        <th><%= book.author %></th>
+        <th><%= book.isbn %></th>
+        <th><a href="/addreview/<%= book.id %>">Add Review</a></th>
+        <th><a href="/reviews/<%= book.id %>">Reviews</a></th>
+    </tr>
+<% end %>
+</table>

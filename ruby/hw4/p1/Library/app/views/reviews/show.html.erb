@@ -1,0 +1,40 @@
+<p>
+  <strong>Title:</strong>
+  <%= @book.title %>
+</p>
+ 
+<p>
+  <strong>Author:</strong>
+  <%= @book.author %>
+</p>
+ 
+<p>
+  <strong>ISBN #:</strong>
+  <%= @book.isbn %>
+</p>
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    padding: 5px;
+}
+</style>
+
+<h2>Reviews</h2>
+
+<table>
+    <tr>
+        <th>Reviewer</th>
+        <th>Review</th>
+        <th>Posted Date</th>
+    </tr>
+<% @book.reviews.each do |review| %>
+    <tr>
+        <th><%= review.reviewer %></th>
+        <th><%= review.body %></th>
+        <th><%= review.created_at %></th>
+    </tr>
+<% end %>
+</table>
+
+<%= link_to 'Back', books_path %>

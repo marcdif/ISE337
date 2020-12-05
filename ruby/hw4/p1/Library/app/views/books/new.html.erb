@@ -1,0 +1,39 @@
+<%= form_with scope: :book, url: books_path, local: true do |form| %>
+  <% if @book.errors.any? %>
+      <div id="error_explanation">
+        <h2>
+          error/s prohibited
+          this book from being saved:
+        </h2>
+        <ul>
+          <% @book.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+
+  <p>
+    <%= form.label :author %><br>
+    <%= form.text_area :author %>
+  </p>
+
+  <p>
+    <%= form.label :isbn %><br>
+    <%= form.text_area :isbn %>
+  </p>
+
+  <p>
+    <%= form.label :copies %><br>
+    <%= form.number_field :copies %>
+  </p>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+<%= link_to 'Back', books_path %>
